@@ -48,6 +48,11 @@ namespace AddIn
                     };
 
                     FeatureClass towerRangeFC = geodatabase.OpenDataset<FeatureClass>("TowerRange");
+                    if (towerRangeFC.GetCount() == 0)
+                    {
+                        MessageBox.Show("Tower ranges is not calculated");
+                        return;
+                    }
                     RowCursor towerRangeCursor = towerRangeFC.Search(spatialQuery, false);
 
                     FeatureClass deviceFC = geodatabase.OpenDataset<FeatureClass>("Device");

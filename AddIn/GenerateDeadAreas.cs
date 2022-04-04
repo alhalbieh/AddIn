@@ -46,7 +46,7 @@ namespace AddIn
                     }
                     Geometry rangesUnion = GeometryEngine.Instance.Union(ranges);
 
-                    FeatureClass serviceAreaFC = geodatabase.OpenDataset<FeatureClass>("ServiceTerritory");
+                    FeatureClass serviceAreaFC = geodatabase.OpenDataset<FeatureClass>("ServiceArea");
                     RowCursor serviceAreaCursor = serviceAreaFC.Search(null, false);
                     Geometry serviceAreaGeometry = null;
                     Geometry deadAreaGeometry = null;
@@ -68,7 +68,7 @@ namespace AddIn
                         return;
                     }
 
-                    FeatureClass deadAreaFC = geodatabase.OpenDataset<FeatureClass>("DeadAreas");
+                    FeatureClass deadAreaFC = geodatabase.OpenDataset<FeatureClass>("DeadArea");
                     RowCursor deadAreaCursor = deadAreaFC.Search(null, false);
 
                     EditOperation editOperation = new EditOperation();
