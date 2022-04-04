@@ -1,0 +1,54 @@
+﻿<ArcGIS defaultAssembly="AddIn.dll" defaultNamespace="AddIn" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
+  <AddInInfo id="{2d154a6a-0602-4fd9-b2ca-f72eebdda46b}" version="1.0" desktopVersion="2.9.32739">
+    <Name>AddIn</Name>
+    <Description>AddIn description</Description>
+    <Image>Images\AddinDesktop32.png</Image>
+    <Author>AAH</Author>
+    <Company>Acme</Company>
+    <Date>04-Apr-22 9:44:05 AM</Date>
+    <Subject>Framework</Subject>
+    <!-- Note subject can be one or more of these topics:
+                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
+  </AddInInfo>
+  <modules>
+    <insertModule id="AddIn_Module" className="Module1" autoLoad="false" caption="Module1">
+      <!-- uncomment to have the control hosted on a separate tab-->
+      <tabs>
+        <!--<tab id="AddIn_Tab1" caption="New Tab">
+          <group refID="AddIn_Group1" />
+        </tab>-->
+      </tabs>
+      <groups>
+        <!-- comment this out if you have no controls on the Addin tab to avoid
+              an empty group-->
+        <group id="AddIn_Group1" caption="Group 1" appearsOnAddInTab="true">
+          <!-- host controls within groups -->
+          <tool refID="AddIn_IdentifyTower" size="large" />
+          <button refID="AddIn_GenerateDeadAreas" size="large" />
+          <button refID="AddIn_GenerateTowerRanges" size="large" />
+          <tool refID="AddIn_GenerateDevice" size="large" />
+          <tool refID="AddIn_FindNearestTower" size="large" />
+        </group>
+      </groups>
+      <controls>
+        <!-- add your controls here -->
+        <tool id="AddIn_IdentifyTower" caption="IdentifyTower" className="IdentifyTower" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Tooltip Heading">
+						Tooltip text<disabledText /></tooltip>
+        </tool>
+        <button id="AddIn_GenerateDeadAreas" caption="GenerateDeadAreas" className="GenerateDeadAreas" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </button>
+        <button id="AddIn_GenerateTowerRanges" caption="GenerateTowerRanges" className="GenerateTowerRanges" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </button>
+        <tool id="AddIn_GenerateDevice" caption="GenerateDevice" className="GenerateDevice" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </tool>
+        <tool id="AddIn_FindNearestTower" caption="FindNearestTower" className="FindNearestTower" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </tool>
+      </controls>
+    </insertModule>
+  </modules>
+</ArcGIS>
