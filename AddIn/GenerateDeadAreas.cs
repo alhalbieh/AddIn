@@ -64,7 +64,7 @@ namespace AddIn
                     }
                     else
                     {
-                        MessageBox.Show("Add a feature in the \"ServiceTerritory\" feature class");
+                        MessageBox.Show("Add a feature in the \"ServiceArea\" feature class");
                         return;
                     }
 
@@ -95,7 +95,8 @@ namespace AddIn
                         }
                     }, deadAreaFC);
                     editOperation.ExecuteAsync();
-                    MapView.Active.Redraw(false);
+
+                    Utilites.CheckAndCreateFeatureLayer(deadAreaFC);
                 }
                 catch (Exception error)
                 {

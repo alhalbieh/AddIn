@@ -42,7 +42,7 @@ namespace AddIn
 
                     MapPoint mapPoint = MapView.Active.ClientToMap(e.ClientPoint);
                     FeatureClass towerFC = geodatabase.OpenDataset<FeatureClass>("Tower");
-                    RowCursor towerCursor = towerFC.Search();
+                    RowCursor towerCursor = towerFC.Search(null, false);
 
                     double minDistance = double.PositiveInfinity;
                     string id = "";

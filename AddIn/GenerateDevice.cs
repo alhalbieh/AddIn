@@ -34,67 +34,76 @@ namespace AddIn
         {
             await QueuedTask.Run(() =>
             {
-                Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
-                FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
-                Geodatabase geodatabase = new Geodatabase(connectionPath);
-
-                MapPoint mapPoint = MapView.Active.ClientToMap(e.ClientPoint);
-                SpatialQueryFilter spatialQuery = new SpatialQueryFilter
+                try
                 {
-                    FilterGeometry = mapPoint,
-                    SpatialRelationship = SpatialRelationship.Intersects
-                };
+                    Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
+                    FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
+                    Geodatabase geodatabase = new Geodatabase(connectionPath);
 
-                FeatureClass towerRangeFC = geodatabase.OpenDataset<FeatureClass>("TowerRange");
-                if (towerRangeFC.GetCount() == 0)
-                {
-                    MessageBox.Show("Tower ranges is not calculated");
-                    return;
-                }
-                RowCursor towerRangeCursor = towerRangeFC.Search(spatialQuery, false);
-
-                FeatureClass deviceFC = geodatabase.OpenDataset<FeatureClass>("Device");
-
-                EditOperation editOperation = new EditOperation();
-                editOperation.Callback(context =>
-                {
-                    try
+                    MapPoint mapPoint = MapView.Active.ClientToMap(e.ClientPoint);
+                    SpatialQueryFilter spatialQuery = new SpatialQueryFilter
                     {
-                        short maxBars = 0;
-                        string towerID = "no tower";
-                        while (towerRangeCursor.MoveNext())
+                        FilterGeometry = mapPoint,
+                        SpatialRelationship = SpatialRelationship.Intersects
+                    };
+
+                    FeatureClass towerRangeFC = geodatabase.OpenDataset<FeatureClass>("TowerRange");
+                    if (towerRangeFC.GetCount() == 0)
+                    {
+                        MessageBox.Show("Tower ranges is not calculated");
+                        return;
+                    }
+                    RowCursor towerRangeCursor = towerRangeFC.Search(spatialQuery);
+
+                    FeatureClass deviceFC = geodatabase.OpenDataset<FeatureClass>("Device");
+
+                    EditOperation editOperation = new EditOperation();
+                    editOperation.Callback(context =>
+                    {
+                        try
                         {
-                            Row towerRange = towerRangeCursor.Current;
-                            short bars = (short)towerRange["BARS"];
-                            string tid = (string)towerRange["TOWERID"];
-                            if (bars > maxBars)
+                            short maxBars = 0;
+                            string towerID = "no tower";
+                            while (towerRangeCursor.MoveNext())
                             {
-                                maxBars = bars;
-                                towerID = tid;
+                                Row towerRange = towerRangeCursor.Current;
+                                short bars = (short)towerRange["BARS"];
+                                string tid = (string)towerRange["TOWERID"];
+                                if (bars > maxBars)
+                                {
+                                    maxBars = bars;
+                                    towerID = tid;
+                                }
                             }
-                        }
 
-                        if (deviceFC.GetCount() == 0)
-                        {
-                            RowBuffer deviceBuffer = deviceFC.CreateRowBuffer();
-                            Row deviceTemp = deviceFC.CreateRow(deviceBuffer);
-                            deviceTemp["DEVICEID"] = "D01";
-                            deviceTemp.Store();
+                            if (deviceFC.GetCount() == 0)
+                            {
+                                RowBuffer deviceBuffer = deviceFC.CreateRowBuffer();
+                                Row deviceTemp = deviceFC.CreateRow(deviceBuffer);
+                                deviceTemp["DEVICEID"] = "D01";
+                                deviceTemp.Store();
+                            }
+                            RowCursor deviceCursor = deviceFC.Search(null, false);
+                            deviceCursor.MoveNext();
+                            Feature device = (Feature)deviceCursor.Current;
+                            device["BARS"] = maxBars;
+                            device["CONNECTEDTOWERID"] = towerID;
+                            device.SetShape(mapPoint);
+                            device.Store();
                         }
-                        RowCursor deviceCursor = deviceFC.Search();
-                        deviceCursor.MoveNext();
-                        Feature device = (Feature)deviceCursor.Current;
-                        device["BARS"] = maxBars;
-                        device["CONNECTEDTOWERID"] = towerID;
-                        device.SetShape(mapPoint);
-                        device.Store();
-                    }
-                    catch (Exception error)
-                    {
-                        MessageBox.Show(error.ToString());
-                    }
-                }, deviceFC);
-                editOperation.ExecuteAsync();
+                        catch (Exception error)
+                        {
+                            MessageBox.Show(error.ToString());
+                        }
+                    }, deviceFC);
+                    editOperation.ExecuteAsync();
+
+                    Utilites.CheckAndCreateFeatureLayer(deviceFC);
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.ToString());
+                }
             });
         }
     }
