@@ -12,3 +12,7 @@ What to add:
 1. Make the tools add layers
 2. Add toggling cabapility
 3. Maybe enhancing the icons
+
+## Notes for the gdb
+1. If you want to change the name of the features/tables or their fields, make sure also change it in the code to avoid excpections
+2. If you want to create your own classes, make sure to uncheck the Z-field unless it is a 3D feature
