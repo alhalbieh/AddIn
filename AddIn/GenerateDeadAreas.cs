@@ -23,9 +23,9 @@ namespace AddIn
     {
         protected override async void OnClick()
         {
-            try
+            await QueuedTask.Run(() =>
             {
-                await QueuedTask.Run(() =>
+                try
                 {
                     Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
                     FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
@@ -74,27 +74,34 @@ namespace AddIn
                     EditOperation editOperation = new EditOperation();
                     editOperation.Callback(context =>
                     {
-                        if (deadAreaCursor.MoveNext())
+                        try
                         {
-                            Feature deadAreaFeature = deadAreaCursor.Current as Feature;
-                            deadAreaFeature.SetShape(deadAreaGeometry);
-                            deadAreaFeature.Store();
+                            if (deadAreaCursor.MoveNext())
+                            {
+                                Feature deadAreaFeature = deadAreaCursor.Current as Feature;
+                                deadAreaFeature.SetShape(deadAreaGeometry);
+                                deadAreaFeature.Store();
+                            }
+                            else
+                            {
+                                RowBuffer deadAreaBuffer = deadAreaFC.CreateRowBuffer();
+                                Feature deadAreaFeature = deadAreaFC.CreateRow(deadAreaBuffer);
+                                deadAreaFeature.SetShape(deadAreaGeometry);
+                            }
                         }
-                        else
+                        catch (Exception error)
                         {
-                            RowBuffer deadAreaBuffer = deadAreaFC.CreateRowBuffer();
-                            Feature deadAreaFeature = deadAreaFC.CreateRow(deadAreaBuffer);
-                            deadAreaFeature.SetShape(deadAreaGeometry);
+                            MessageBox.Show(error.ToString());
                         }
                     }, deadAreaFC);
                     editOperation.ExecuteAsync();
                     MapView.Active.Redraw(false);
-                });
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.ToString());
-            }
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.ToString());
+                }
+            });
         }
     }
 }

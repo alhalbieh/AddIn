@@ -22,9 +22,9 @@ namespace AddIn
 
         protected override async Task HandleMouseUpAsync(MapViewMouseButtonEventArgs e)
         {
-            try
+            await QueuedTask.Run(() =>
             {
-                await QueuedTask.Run(() =>
+                try
                 {
                     Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
                     FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
@@ -50,12 +50,12 @@ namespace AddIn
                     {
                         MessageBox.Show("Move closer to the tower");
                     }
-                });
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.ToString());
-            }
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.ToString());
+                }
+            });
         }
     }
 }

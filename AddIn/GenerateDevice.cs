@@ -32,33 +32,33 @@ namespace AddIn
 
         protected override async Task HandleMouseUpAsync(MapViewMouseButtonEventArgs e)
         {
-            try
+            await QueuedTask.Run(() =>
             {
-                await QueuedTask.Run(() =>
+                Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
+                FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
+                Geodatabase geodatabase = new Geodatabase(connectionPath);
+
+                MapPoint mapPoint = MapView.Active.ClientToMap(e.ClientPoint);
+                SpatialQueryFilter spatialQuery = new SpatialQueryFilter
                 {
-                    Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
-                    FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
-                    Geodatabase geodatabase = new Geodatabase(connectionPath);
+                    FilterGeometry = mapPoint,
+                    SpatialRelationship = SpatialRelationship.Intersects
+                };
 
-                    MapPoint mapPoint = MapView.Active.ClientToMap(e.ClientPoint);
-                    SpatialQueryFilter spatialQuery = new SpatialQueryFilter
-                    {
-                        FilterGeometry = mapPoint,
-                        SpatialRelationship = SpatialRelationship.Intersects
-                    };
+                FeatureClass towerRangeFC = geodatabase.OpenDataset<FeatureClass>("TowerRange");
+                if (towerRangeFC.GetCount() == 0)
+                {
+                    MessageBox.Show("Tower ranges is not calculated");
+                    return;
+                }
+                RowCursor towerRangeCursor = towerRangeFC.Search(spatialQuery, false);
 
-                    FeatureClass towerRangeFC = geodatabase.OpenDataset<FeatureClass>("TowerRange");
-                    if (towerRangeFC.GetCount() == 0)
-                    {
-                        MessageBox.Show("Tower ranges is not calculated");
-                        return;
-                    }
-                    RowCursor towerRangeCursor = towerRangeFC.Search(spatialQuery, false);
+                FeatureClass deviceFC = geodatabase.OpenDataset<FeatureClass>("Device");
 
-                    FeatureClass deviceFC = geodatabase.OpenDataset<FeatureClass>("Device");
-
-                    EditOperation editOperation = new EditOperation();
-                    editOperation.Callback(context =>
+                EditOperation editOperation = new EditOperation();
+                editOperation.Callback(context =>
+                {
+                    try
                     {
                         short maxBars = 0;
                         string towerID = "no tower";
@@ -88,14 +88,14 @@ namespace AddIn
                         device["CONNECTEDTOWERID"] = towerID;
                         device.SetShape(mapPoint);
                         device.Store();
-                    }, deviceFC);
-                    editOperation.ExecuteAsync();
-                });
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.ToString());
-            }
+                    }
+                    catch (Exception error)
+                    {
+                        MessageBox.Show(error.ToString());
+                    }
+                }, deviceFC);
+                editOperation.ExecuteAsync();
+            });
         }
     }
 }
