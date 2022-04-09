@@ -9,8 +9,8 @@ Currently it has 5 add-ins:
 5. Generate dead areas
 
 What to add:
-2. Add toggling cabapility
-3. Maybe enhancing the icons
+1. Add toggling cabapility
+2. Maybe enhancing the icons
 
 ## Notes for the gdb
 1. If you want to change the name of the features/tables or their fields, make sure also change it in the code to avoid excpections
