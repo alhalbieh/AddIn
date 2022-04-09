@@ -9,7 +9,6 @@ Currently it has 5 add-ins:
 5. Generate dead areas
 
 What to add:
-1. Make the tools add layers
 2. Add toggling cabapility
 3. Maybe enhancing the icons
 
