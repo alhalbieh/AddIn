@@ -1,4 +1,5 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Mapping;
 using System;
 using System.Collections.Generic;
@@ -38,10 +39,10 @@ namespace AddIn
                 string layerName = layer.GetFeatureClass().GetName();
                 if (layerName == editedFCName)
                 {
-                    break;
+                    return;
                 }
-                LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
             }
+            LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
         }
     }
 }
