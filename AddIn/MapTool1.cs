@@ -39,12 +39,19 @@ namespace AddIn
 
         protected override async Task<bool> OnSketchCompleteAsync(Geometry serviceAreaGeometry)
         {
+            if (serviceAreaGeometry == null)
+            {
+                MessageBox.Show("No feature was drawn");
+                return true;
+            }
+
             MessageBoxResult result = MessageBox.Show(messageText: "Confirm shape?", caption: "Confirm Shape",
                                                       button: MessageBoxButton.YesNo);
             if (result == MessageBoxResult.No)
             {
                 return true;
             }
+
             await QueuedTask.Run(() =>
             {
                 try
