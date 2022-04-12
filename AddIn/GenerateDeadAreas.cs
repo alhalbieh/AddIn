@@ -27,9 +27,7 @@ namespace AddIn
             {
                 try
                 {
-                    Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
-                    FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
-                    Geodatabase geodatabase = new Geodatabase(connectionPath);
+                    Geodatabase geodatabase = Utilites.ProjectDefaultGDB();
 
                     FeatureClass towerRangeFC = geodatabase.OpenDataset<FeatureClass>("TowerRange");
                     RowCursor towerRangeCursor = towerRangeFC.Search(null, false);

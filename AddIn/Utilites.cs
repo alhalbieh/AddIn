@@ -1,4 +1,5 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Mapping;
 using System;
@@ -48,6 +49,14 @@ namespace AddIn
             //    }
             //}
             //return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
+        }
+
+        public static Geodatabase ProjectDefaultGDB()
+        {
+            Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
+            FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
+            Geodatabase geodatabase = new Geodatabase(connectionPath);
+            return geodatabase;
         }
     }
 }

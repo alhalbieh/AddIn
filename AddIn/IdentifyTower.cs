@@ -26,9 +26,7 @@ namespace AddIn
             {
                 try
                 {
-                    Uri uri = new Uri(Project.Current.DefaultGeodatabasePath);
-                    FileGeodatabaseConnectionPath connectionPath = new FileGeodatabaseConnectionPath(uri);
-                    Geodatabase geodatabase = new Geodatabase(connectionPath);
+                    Geodatabase geodatabase = Utilites.ProjectDefaultGDB();
 
                     MapPoint mapPoint = MapView.Active.ClientToMap(e.ClientPoint);
                     Geometry buffer = GeometryEngine.Instance.Buffer(mapPoint, 4000);
