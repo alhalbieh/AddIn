@@ -82,7 +82,7 @@ namespace AddIn
                     }, towerRangeFC);
                     editOperation.ExecuteAsync();
 
-                    Utilites.CheckAndCreateFeatureLayer(towerRangeFC);
+                    FeatureLayer layer = Utilites.CheckAndCreateFeatureLayer(towerRangeFC);
                 }
                 catch (Exception error)
                 {

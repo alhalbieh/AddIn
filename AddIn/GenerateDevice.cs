@@ -98,7 +98,7 @@ namespace AddIn
                     }, deviceFC);
                     editOperation.ExecuteAsync();
 
-                    Utilites.CheckAndCreateFeatureLayer(deviceFC);
+                    FeatureLayer layer = Utilites.CheckAndCreateFeatureLayer(deviceFC);
                 }
                 catch (Exception error)
                 {

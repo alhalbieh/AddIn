@@ -164,7 +164,7 @@ namespace AddIn
                     }, deadAreaFC);
                     editOperation2.ExecuteAsync();
 
-                    Utilites.CheckAndCreateFeatureLayer(deadAreaFC);
+                    FeatureLayer layer = Utilites.CheckAndCreateFeatureLayer(deadAreaFC);
                 }
                 catch (Exception error)
                 {

@@ -28,21 +28,26 @@ namespace AddIn
             LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
         }
 
-        public static void CheckAndCreateFeatureLayer(FeatureClass featureClass)
+        public static FeatureLayer CheckAndCreateFeatureLayer(FeatureClass featureClass)
         {
             string editedFCName = featureClass.GetName();
             Map map = MapView.Active.Map;
-            IEnumerable<FeatureLayer> layers = map.GetLayersAsFlattenedList().OfType<FeatureLayer>();
-
-            foreach (FeatureLayer layer in layers)
+            IEnumerable<FeatureLayer> layers = map.GetLayersAsFlattenedList().OfType<FeatureLayer>()
+                                              .Where(lyr => lyr.GetFeatureClass().GetName() == editedFCName);
+            if (layers.Any())
             {
-                string layerName = layer.GetFeatureClass().GetName();
-                if (layerName == editedFCName)
-                {
-                    return;
-                }
+                return layers.First();
             }
-            LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
+            return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
+            //foreach (FeatureLayer layer in layers)
+            //{
+            //    string layerName = layer.GetFeatureClass().GetName();
+            //    if (layerName == editedFCName)
+            //    {
+            //        return layer;
+            //    }
+            //}
+            //return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
         }
     }
 }
