@@ -37,13 +37,12 @@ namespace AddIn
             return base.OnToolActivateAsync(active);
         }
 
-        protected override async Task<bool> OnSketchCompleteAsync(Geometry geometry)
+        protected override async Task<bool> OnSketchCompleteAsync(Geometry serviceAreaGeometry)
         {
             MessageBoxResult result = MessageBox.Show(messageText: "Confirm shape?", caption: "Confirm Shape",
                                                       button: MessageBoxButton.YesNo);
             if (result == MessageBoxResult.No)
             {
-                MessageBox.Show(geometry.HasZ.ToString());
                 return true;
             }
             await QueuedTask.Run(() =>
@@ -134,7 +133,11 @@ namespace AddIn
                     serviceAreaCursor.MoveNext();
                     Feature serviceArea = serviceAreaCursor.Current as Feature;
                     */
-                    Geometry deadAreaGeometry = GeometryEngine.Instance.Intersection(rangesUnion, geometry);
+
+                    //Geometry deadAreaGeometry = GeometryEngine.Instance.Difference(serviceAreaGeometry, rangesUnion);
+                    Geometry tempGeometry = GeometryEngine.Instance.Union(rangesUnion, serviceAreaGeometry);
+                    Geometry deadAreaGeometry = GeometryEngine.Instance.Difference(tempGeometry, rangesUnion);
+
                     FeatureClass deadAreaFC = geodatabase.OpenDataset<FeatureClass>("DeadArea");
                     RowCursor deadAreaCursor = deadAreaFC.Search(null, false);
                     EditOperation editOperation2 = new EditOperation();
