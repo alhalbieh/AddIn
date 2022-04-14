@@ -31,27 +31,15 @@ namespace AddIn
 
         public static FeatureLayer CheckAndCreateFeatureLayer(FeatureClass featureClass)
         {
-            string featureClassName = featureClass.GetName();
-            long featureClassID = featureClass.GetID();
-            MessageBox.Show(featureClassID.ToString());
-
+            Uri featureClassUri = featureClass.GetPath();
             Map map = MapView.Active.Map;
             IEnumerable<FeatureLayer> layers = map.GetLayersAsFlattenedList().OfType<FeatureLayer>()
-                                              .Where(lyr => lyr.GetFeatureClass().GetID() == featureClassID);
+                                              .Where(lyr => lyr.GetFeatureClass().GetPath() == featureClassUri);
             if (layers.Any())
             {
                 return layers.First();
             }
-            return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: featureClassName);
-            //foreach (FeatureLayer layer in layers)
-            //{
-            //    string layerName = layer.GetFeatureClass().GetName();
-            //    if (layerName == editedFCName)
-            //    {
-            //        return layer;
-            //    }
-            //}
-            //return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
+            return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: featureClass.GetName());
         }
 
         public static Geodatabase ProjectDefaultGDB()
