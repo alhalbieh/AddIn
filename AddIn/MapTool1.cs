@@ -169,6 +169,7 @@ namespace AddIn
                         {
                             MessageBox.Show(error.ToString());
                         }
+                        context.Invalidate(deadAreaFC);
                     }, deadAreaFC);
                     editOperation2.ExecuteAsync();
 

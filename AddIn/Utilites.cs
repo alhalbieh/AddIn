@@ -31,15 +31,18 @@ namespace AddIn
 
         public static FeatureLayer CheckAndCreateFeatureLayer(FeatureClass featureClass)
         {
-            string editedFCName = featureClass.GetName();
+            string featureClassName = featureClass.GetName();
+            long featureClassID = featureClass.GetID();
+            MessageBox.Show(featureClassID.ToString());
+
             Map map = MapView.Active.Map;
             IEnumerable<FeatureLayer> layers = map.GetLayersAsFlattenedList().OfType<FeatureLayer>()
-                                              .Where(lyr => lyr.GetFeatureClass().GetName() == editedFCName);
+                                              .Where(lyr => lyr.GetFeatureClass().GetID() == featureClassID);
             if (layers.Any())
             {
                 return layers.First();
             }
-            return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: editedFCName);
+            return LayerFactory.Instance.CreateFeatureLayer(featureClass, map, layerName: featureClassName);
             //foreach (FeatureLayer layer in layers)
             //{
             //    string layerName = layer.GetFeatureClass().GetName();

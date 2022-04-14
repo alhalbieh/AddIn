@@ -54,7 +54,7 @@ namespace AddIn
                     RowCursor towerRangeCursor = towerRangeFC.Search(spatialQuery);
 
                     FeatureClass deviceFC = geodatabase.OpenDataset<FeatureClass>("Device");
-
+                    Feature device = null;
                     EditOperation editOperation = new EditOperation();
                     editOperation.Callback(context =>
                     {
@@ -83,7 +83,7 @@ namespace AddIn
                             }
                             RowCursor deviceCursor = deviceFC.Search(null, false);
                             deviceCursor.MoveNext();
-                            Feature device = (Feature)deviceCursor.Current;
+                            device = (Feature)deviceCursor.Current;
                             device["BARS"] = maxBars;
                             device["CONNECTEDTOWERID"] = towerID;
                             device.SetShape(mapPoint);
@@ -93,6 +93,7 @@ namespace AddIn
                         {
                             MessageBox.Show(error.ToString());
                         }
+                        context.Invalidate(device);
                     }, deviceFC);
                     editOperation.ExecuteAsync();
 

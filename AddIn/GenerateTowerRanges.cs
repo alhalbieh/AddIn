@@ -77,6 +77,7 @@ namespace AddIn
                         {
                             MessageBox.Show(error.ToString());
                         }
+                        context.Invalidate(towerRangeFC);
                     }, towerRangeFC);
                     editOperation.ExecuteAsync();
 
