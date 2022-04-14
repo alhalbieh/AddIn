@@ -126,10 +126,9 @@
   <ItemGroup>
     <Compile Include="FindNearestTower.cs" />
     <Compile Include="IdentifyTower.cs" />
-    <Compile Include="GenerateDeadAreas.cs" />
     <Compile Include="GenerateDevice.cs" />
     <Compile Include="GenerateTowerRanges.cs" />
-    <Compile Include="MapTool1.cs" />
+    <Compile Include="GenerateDeadAreas.cs" />
     <Compile Include="Module1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilites.cs" />

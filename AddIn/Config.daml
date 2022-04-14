@@ -24,12 +24,10 @@
 				<group id="AddIn_Group1" caption="Group 1" appearsOnAddInTab="true">
 					<!-- host controls within groups -->
 					<tool refID="AddIn_IdentifyTower" size="large" />
-					<button refID="AddIn_GenerateDeadAreas" size="large" />
+					<tool refID="AddIn_FindNearestTower" size="large" />
 					<button refID="AddIn_GenerateTowerRanges" size="large" />
 					<tool refID="AddIn_GenerateDevice" size="large" />
-					<tool refID="AddIn_FindNearestTower" size="large" />
-					<tool refID="AddIn_MapTool1" size="large" />
-					<button refID="AddIn_ConfirmBox" size="large" />
+					<tool refID="AddIn_GenerateDeadAreas" size="large" />
 				</group>
 			</groups>
 			<controls>
@@ -39,11 +37,11 @@
 						Tooltip text<disabledText />
 					</tooltip>
 				</tool>
-				<button id="AddIn_GenerateDeadAreas" caption="GenerateDeadAreas" className="GenerateDeadAreas" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
+				<tool id="AddIn_FindNearestTower" caption="FindNearestTower" className="FindNearestTower" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
 					<tooltip heading="Tooltip Heading">
 						Tooltip text<disabledText />
 					</tooltip>
-				</button>
+				</tool>
 				<button id="AddIn_GenerateTowerRanges" caption="GenerateTowerRanges" className="GenerateTowerRanges" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
 					<tooltip heading="Tooltip Heading">
 						Tooltip text<disabledText />
@@ -54,12 +52,7 @@
 						Tooltip text<disabledText />
 					</tooltip>
 				</tool>
-				<tool id="AddIn_FindNearestTower" caption="FindNearestTower" className="FindNearestTower" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
-					<tooltip heading="Tooltip Heading">
-						Tooltip text<disabledText />
-					</tooltip>
-				</tool>
-				<tool id="AddIn_MapTool1" caption="MapTool 1" className="MapTool1" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
+				<tool id="AddIn_GenerateDeadAreas" caption="GenerateDeadAreas" className="GenerateDeadAreas" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonRed32.png" condition="esri_mapping_mapPane">
 					<tooltip heading="Tooltip Heading">
 						Tooltip text<disabledText />
 					</tooltip>
