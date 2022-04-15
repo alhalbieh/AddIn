@@ -42,7 +42,7 @@ namespace AddIn
                     if (cursor.MoveNext())
                     {
                         Row row = cursor.Current;
-                        MessageBox.Show($"Tower id: {row["TOWERID"]} \n Tower type: {row["TOWERTYPE"]}");
+                        MessageBox.Show($"Tower id: {row["TOWERID"]}\n Tower type: {row["TOWERTYPE"]}");
                     }
                     else
                     {

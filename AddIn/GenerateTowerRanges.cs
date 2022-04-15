@@ -82,6 +82,21 @@ namespace AddIn
                     editOperation.ExecuteAsync();
 
                     FeatureLayer layer = Utilites.CheckAndCreateFeatureLayer(towerRangeFC);
+
+                    string[] fields = new string[] { "Bars" };
+                    UniqueValueRendererDefinition uniqueValueRendererDef = new UniqueValueRendererDefinition(fields);
+                    CIMUniqueValueRenderer uniqueValueRenderer = (CIMUniqueValueRenderer)layer.CreateRenderer(uniqueValueRendererDef);
+                    foreach (var cls in uniqueValueRenderer.Groups[0].Classes)
+                    {
+                        switch (cls.Label)
+                        {
+                            case "1": cls.Symbol.Symbol.SetColor(ColorFactory.Instance.RedRGB); break;
+                            case "2": cls.Symbol.Symbol.SetColor(ColorFactory.Instance.CreateRGBColor(255, 255, 0)); break;
+                            case "3": cls.Symbol.Symbol.SetColor(ColorFactory.Instance.GreenRGB); break;
+                            default: break;
+                        }
+                    }
+                    layer.SetRenderer(uniqueValueRenderer);
                 }
                 catch (Exception error)
                 {
